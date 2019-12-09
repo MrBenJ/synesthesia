@@ -1,0 +1,24 @@
+{
+  "name": "art-project-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "style": "node-sass --watch ./style.scss ./static/style.css",
+    "livereload": "livereload . -e 'html,css,js'",
+    "dev": "npm-run-all -p style livereload start",
+    "start": "node server.js",
+    "build": "node-sass ./style.scss ./static/style.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "livereload": "^0.8.2",
+    "node-sass": "^4.13.0",
+    "nodemon": "^1.19.4",
+    "npm-run-all": "^4.1.5"
+  }
+}
