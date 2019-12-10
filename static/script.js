@@ -1,4 +1,37 @@
 const body = document.getElementById('root');
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+const audioElement = document.querySelector('audio');
+const track = audioCtx.createMediaElementSource(audioElement);
+const analyzer = audioCtx.createAnalyser();
+
+track
+  .connect(analyzer)
+  .connect(audioCtx.destination);
+
+let didStart = false;
+
+function startAudio() {
+  audioElement.play();
+}
+
+analyzer.fftSize = 2048;
+  const bufferLength = analyzer.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+function animate() {
+  window.requestAnimationFrame(animate);
+  analyzer.getByteTimeDomainData(dataArray);
+
+  for (let i = 0; i < bufferLength; i++) {
+    console.log(dataArray[i]);
+  }
+  
+}
+
+audioElement.addEventListener('play', animate);
+
 
 
 function clear() {
@@ -17,6 +50,10 @@ function fuzzyText(text) {
 }
 
 function onTerminalInput(event) {
+  if (!didStart) {
+    startAudio();
+    didStart = true;
+  }
   if (event.key === 'Enter') {
     fuzzyText(event.currentTarget.value);
   }
@@ -29,6 +66,7 @@ function init() {
   body.appendChild(textarea);
   textarea.focus();
   textarea.addEventListener('keyup', onTerminalInput);
+  
 }
 
 

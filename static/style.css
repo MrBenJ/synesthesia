@@ -14,13 +14,15 @@
   border: none;
   resize: none;
   font-family: 'Courier New', Courier, monospace; }
+  .terminal:focus, .terminal:active {
+    outline: none; }
 
 .fullscreen {
   height: 100%;
   width: 100%; }
 
 .fuzzy {
-  animation-duration: 2s;
+  animation-duration: 1.0833s;
   animation-name: fuzzText;
   animation-iteration-count: infinite; }
 

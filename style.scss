@@ -15,6 +15,10 @@
   border: none;
   resize: none;
   font-family: 'Courier New', Courier, monospace;
+
+  &:focus, &:active {
+    outline: none;
+  }
 }
 
 .fullscreen {
@@ -23,7 +27,7 @@
 }
 
 .fuzzy {
-  animation-duration: 2s;
+  animation-duration: 1.0833s;
   animation-name: fuzzText;
   animation-iteration-count: infinite;
 }
