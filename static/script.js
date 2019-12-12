@@ -7,7 +7,7 @@ const track = audioCtx.createMediaElementSource(audioElement);
 const analyzer = audioCtx.createAnalyser();
 
 track
-  .connect(analyzer)
+  .connect(analyzer) // This isn't reactive... what do
   .connect(audioCtx.destination);
 
 let didStart = false;
@@ -16,7 +16,7 @@ function startAudio() {
   audioElement.play();
 }
 
-analyzer.fftSize = 2048;
+analyzer.fftSize = 1024;
   const bufferLength = analyzer.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
@@ -25,6 +25,7 @@ function animate() {
   analyzer.getByteTimeDomainData(dataArray);
 
   for (let i = 0; i < bufferLength; i++) {
+    // canvas stuff goes in here
     console.log(dataArray[i]);
   }
   
