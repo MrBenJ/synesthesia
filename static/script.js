@@ -1,37 +1,43 @@
 const body = document.getElementById('root');
 const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
+let audioCtx;
+let track;
+let analyzer;
 
 const audioElement = document.querySelector('audio');
-const track = audioCtx.createMediaElementSource(audioElement);
-const analyzer = audioCtx.createAnalyser();
 
-track
-  .connect(analyzer) // This isn't reactive... what do
-  .connect(audioCtx.destination);
 
 let didStart = false;
 
 function startAudio() {
-  audioElement.play();
+  audioCtx = new AudioContext();
+  track = audioCtx.createMediaElementSource(audioElement);
+  analyzer = audioCtx.createAnalyser();
+  analyzer.fftSize = 1024;  
+  track
+    .connect(analyzer) // This isn't reactive... what do
+    .connect(audioCtx.destination);
+
+    audioElement.play();
+    animate();
 }
 
-analyzer.fftSize = 1024;
-  const bufferLength = analyzer.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
 
 function animate() {
-  window.requestAnimationFrame(animate);
+  const bufferLength = analyzer.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
   analyzer.getByteTimeDomainData(dataArray);
+  console.log(dataArray);
+  // for (let i = 0; i < bufferLength; i++) {
+  //   // canvas stuff goes in here
+  //   // console.log(dataArray[i]);
+    
+  // }
 
-  for (let i = 0; i < bufferLength; i++) {
-    // canvas stuff goes in here
-    console.log(dataArray[i]);
-  }
-  
+  window.requestAnimationFrame(animate);
 }
 
-audioElement.addEventListener('play', animate);
+// audioElement.addEventListener('play', animate);
 
 
 
@@ -51,12 +57,12 @@ function fuzzyText(text) {
 }
 
 function onTerminalInput(event) {
-  if (!didStart) {
+  console.log('input');
+  
+  if (event.key === 'Enter' && !didStart) {
+    console.log('lets get this bad party started');
     startAudio();
     didStart = true;
-  }
-  if (event.key === 'Enter') {
-    fuzzyText(event.currentTarget.value);
   }
 }
 
@@ -67,7 +73,7 @@ function init() {
   body.appendChild(textarea);
   textarea.focus();
   textarea.addEventListener('keyup', onTerminalInput);
-  
+
 }
 
 
