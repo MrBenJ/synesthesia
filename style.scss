@@ -11,7 +11,7 @@
   padding: 0;
   background-color: transparent;
   color: #00CC00;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   border: none;
   resize: none;
   font-family: 'Courier New', Courier, monospace;
@@ -19,6 +19,32 @@
   &:focus, &:active {
     outline: none;
   }
+}
+
+.syn {
+  position: absolute;
+  transition: all .2s ease;
+
+  &.top { 
+    top: 0; 
+  }
+  
+  &.left { 
+    top: 0; 
+    left: 0; 
+    height: 100vh; 
+  }
+  
+  &.bottom { 
+    bottom: 0; 
+  }
+  
+  &.right { 
+    top: 0; 
+    right: 0; 
+    height: 100vh; 
+  }
+
 }
 
 .fullscreen {

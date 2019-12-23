@@ -73,7 +73,23 @@ function init() {
   body.appendChild(textarea);
   textarea.focus();
   textarea.addEventListener('keyup', onTerminalInput);
+  
+  const topDiv = document.createElement('div');
+  topDiv.classList.add('syn', 'top');
+  
+  const rightDiv = document.createElement('div');
+  rightDiv.classList.add('syn', 'right');
+  
+  const bottomDiv = document.createElement('div');
+  bottomDiv.classList.add('syn', 'bottom');
+  
+  const leftDiv = document.createElement('div');
+  leftDiv.classList.add('syn', 'left');
 
+  body.appendChild(topDiv);
+  body.appendChild(rightDiv);
+  body.appendChild(bottomDiv);
+  body.appendChild(leftDiv);
 }
 
 
