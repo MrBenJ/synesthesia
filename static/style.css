@@ -28,8 +28,7 @@
 .syn {
   position: absolute; }
   .syn .bar {
-    transition: background-color .5s;
-    opacity: .8; }
+    transition: background-color .75s; }
   .syn.top {
     display: flex;
     top: 0;

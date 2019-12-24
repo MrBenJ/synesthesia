@@ -6,22 +6,32 @@ let track;
 let analyzer;
 
 // Constant values
-/** This value will affect FFT buffer size. Don't set it too high! */
+/** Total elements to render on screen
+ * This value will affect FFT buffer size. Don't set it too high! 
+ */
 const TOTAL_ELEMENTS = 512;
+
+/** Colors to cycle throughout the experience */
 const COLORS = [
-  'rebeccapurple',
+  '#00cc00',
   'rgb(0, 247, 255)', 
   'rgb(9, 25, 247)', 
   'dodgerblue', 
   'hotpink'
 ];
-const COLOR_THRESHOLD = 80;
+const COLOR_THRESHOLD = 70;
 
 // Variables to keep track of
+/** Body to append elements to */
 const body = document.getElementById('root');
+
+/** Total number of input events from the user */
 let totalInputEvents = 0;
+
+/** Points to a color on the COLORS array */
 let colorPointer = 0;
 
+/** Wrapper div arund the top container with bars */
 const topWrapper = document.createElement('div');
 topWrapper.classList.add('syn', 'top');
 body.appendChild(topWrapper);
@@ -32,6 +42,7 @@ for (let i = 0; i < TOTAL_ELEMENTS / 4; i++) {
   topWrapper.appendChild(newDiv);
 }
 
+/** Wrapper div arund the bottom container with bars */
 const bottomWrapper = document.createElement('div');
 bottomWrapper.classList.add('syn', 'bottom');
 body.appendChild(bottomWrapper);
@@ -65,16 +76,11 @@ function startAudio() {
   animate();
 }
 
-// let low = 0;
-// let high = 128;
-
 function animate() {
   const bufferLength = analyzer.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
   analyzer.getByteTimeDomainData(dataArray);
   
-
-  // topDiv.setAttribute('style', `height: ${dataArray[0]}px;`);
   for (let i = 0; i < topElements.length; i++) {
     const div = topElements[i];
     if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
@@ -140,12 +146,26 @@ function onTerminalInput(event) {
     console.log('lets get this bad party started');
     startAudio();
     didStart = true;
+    document.querySelector('textarea').value = 
+`function synesthesia() {
+  // Keep on coding!
+  // (this code won't run)
+  const el = document.getElementById('non-existant');
+
+}`
   }
 }
 
 // Initialize the code!
 function init() {
   const textarea = document.createElement('textarea');
+  textarea.value = `
+This is an interactive experience showing what it's like to write code with sound-color synesthesia. 
+
+It's not a perfect representation of my own experience, but it's pretty close!
+
+Press 'Enter' and start 'writing code' in this element to see what it looks like
+  `;
   textarea.classList.add('terminal');
   body.appendChild(textarea);
   textarea.focus();
