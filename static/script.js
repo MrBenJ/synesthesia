@@ -90,6 +90,7 @@ function init() {
   body.appendChild(rightDiv);
   body.appendChild(bottomDiv);
   body.appendChild(leftDiv);
+  // Reference: https://www.kkhaydarov.com/audio-visualizer/
 }
 
 
