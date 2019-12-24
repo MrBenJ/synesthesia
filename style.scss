@@ -34,7 +34,12 @@ $TOTAL_ELEMENTS: 512;
 
 .syn {
   position: absolute;
-  // transition: all .1s;
+
+  .bar {
+    transition: background-color .5s;
+    opacity: .8;
+  }
+  
 
   &.top { 
     display: flex;
@@ -42,7 +47,7 @@ $TOTAL_ELEMENTS: 512;
     width: 100%;
     
     .bar {
-      background-color: rgb(0, 247, 255);
+      // background-color: rgb(0, 247, 255);
       width: calc(100% / (#{$TOTAL_ELEMENTS} / 4));
     }
   }
@@ -57,10 +62,13 @@ $TOTAL_ELEMENTS: 512;
     display: flex;
     bottom: 0; 
     width: 100%;
+    transform: rotate(180deg);
 
     .bar {
-      background-color: rgb(0, 247, 255);
+      
+      // background-color: rgb(0, 247, 255);
       width: calc(100% / (#{$TOTAL_ELEMENTS} / 4));
+      // background-color: rgb(9, 25, 247);
     }
   }
   

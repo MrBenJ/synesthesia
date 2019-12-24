@@ -5,10 +5,23 @@ let audioCtx;
 let track;
 let analyzer;
 
-const body = document.getElementById('root');
-
+// Constant values
 /** This value will affect FFT buffer size. Don't set it too high! */
 const TOTAL_ELEMENTS = 512;
+const COLORS = [
+  '#00CC00', 
+  'rgb(0, 247, 255)', 
+  'rgb(9, 25, 247)', 
+  'dodgerblue', 
+  'hotpink',
+  'yellow'
+];
+const COLOR_THRESHOLD = 80;
+
+// Variables to keep track of
+const body = document.getElementById('root');
+let totalInputEvents = 0;
+let colorPointer = 0;
 
 const topWrapper = document.createElement('div');
 topWrapper.classList.add('syn', 'top');
@@ -30,22 +43,12 @@ for (let i = 0; i < TOTAL_ELEMENTS / 4; i++) {
   bottomWrapper.appendChild(newDiv);
 }
 
+/** @TODO add Left and Right wrappers */
+
 
 
 const topElements = Array.from(document.querySelectorAll('.syn.top .bar'));
 const bottomElements = Array.from(document.querySelectorAll('.syn.bottom .bar'));
-// const topDiv = document.createElement('div');
-// topDiv.classList.add('syn', 'top');
-
-// const rightDiv = document.createElement('div');
-// rightDiv.classList.add('syn', 'right');
-
-// const bottomDiv = document.createElement('div');
-// bottomDiv.classList.add('syn', 'bottom');
-
-// const leftDiv = document.createElement('div');
-// leftDiv.classList.add('syn', 'left');
-
 
 let didStart = false;
 
@@ -63,7 +66,8 @@ function startAudio() {
   animate();
 }
 
-let high = 0;
+// let low = 0;
+// let high = 128;
 
 function animate() {
   const bufferLength = analyzer.frequencyBinCount;
@@ -74,12 +78,34 @@ function animate() {
   // topDiv.setAttribute('style', `height: ${dataArray[0]}px;`);
   for (let i = 0; i < topElements.length; i++) {
     const div = topElements[i];
-    div.setAttribute('style', `height: ${dataArray[i]}px`);
+    if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
+      colorPointer += 1;
+      if (colorPointer === COLORS.length) {
+        colorPointer = 0;
+      }
+    } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
+      colorPointer -= 1;
+      if (colorPointer === -1) {
+        colorPointer = 0;
+      }
+    }
+    div.setAttribute('style', `height: ${dataArray[i]}px; background-color: ${COLORS[colorPointer]};`);
   }
   
   for (let i = 0; i < bottomElements.length; i++) {
     const div = bottomElements[i];
-    div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px`);
+    if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
+      colorPointer += 1;
+      if (colorPointer === COLORS.length) {
+        colorPointer = 0;
+      }
+    } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
+      colorPointer -= 1;
+      if (colorPointer === -1) {
+        colorPointer = 0;
+      }
+    }
+    div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px; background-color: ${COLORS[colorPointer]};`);
   }
   // for (let i = 0; i < bufferLength; i++) {
   //   // canvas stuff goes in here
@@ -110,8 +136,7 @@ function fuzzyText(text) {
 }
 
 function onTerminalInput(event) {
-  console.log('input');
-  
+  totalInputEvents++;
   if (event.key === 'Enter' && !didStart) {
     console.log('lets get this bad party started');
     startAudio();
@@ -127,12 +152,6 @@ function init() {
   textarea.focus();
   textarea.addEventListener('keyup', onTerminalInput);
   
-  
-
-  // body.appendChild(topDiv);
-  // body.appendChild(rightDiv);
-  // body.appendChild(bottomDiv);
-  // body.appendChild(leftDiv);
   // Reference: https://www.kkhaydarov.com/audio-visualizer/
 }
 

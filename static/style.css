@@ -27,12 +27,14 @@
 
 .syn {
   position: absolute; }
+  .syn .bar {
+    transition: background-color .5s;
+    opacity: .8; }
   .syn.top {
     display: flex;
     top: 0;
     width: 100%; }
     .syn.top .bar {
-      background-color: #00f7ff;
       width: calc(100% / (512 / 4)); }
   .syn.left {
     top: 0;
@@ -41,9 +43,9 @@
   .syn.bottom {
     display: flex;
     bottom: 0;
-    width: 100%; }
+    width: 100%;
+    transform: rotate(180deg); }
     .syn.bottom .bar {
-      background-color: #00f7ff;
       width: calc(100% / (512 / 4)); }
   .syn.right {
     top: 0;
