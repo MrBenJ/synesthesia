@@ -9,12 +9,11 @@ let analyzer;
 /** This value will affect FFT buffer size. Don't set it too high! */
 const TOTAL_ELEMENTS = 512;
 const COLORS = [
-  '#00CC00', 
+  'rebeccapurple',
   'rgb(0, 247, 255)', 
   'rgb(9, 25, 247)', 
   'dodgerblue', 
-  'hotpink',
-  'yellow'
+  'hotpink'
 ];
 const COLOR_THRESHOLD = 80;
 
