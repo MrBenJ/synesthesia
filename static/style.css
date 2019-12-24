@@ -1,3 +1,4 @@
+/** TOTAL_ELEMENTS from JS */
 #root {
   height: 100vh;
   width: 100vw;
@@ -6,28 +7,44 @@
   overflow: hidden; }
 
 .terminal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50%;
+  width: 50%;
   margin: 0;
   padding: 0;
   background-color: transparent;
   color: #00CC00;
   font-size: 1.2rem;
-  border: none;
+  border: 20px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
   resize: none;
-  font-family: 'Courier New', Courier, monospace; }
+  font-family: monospace; }
   .terminal:focus, .terminal:active {
     outline: none; }
 
 .syn {
-  position: absolute;
-  transition: all .2s ease; }
+  position: absolute; }
   .syn.top {
-    top: 0; }
+    display: flex;
+    top: 0;
+    width: 100%; }
+    .syn.top .bar {
+      background-color: #00f7ff;
+      width: calc(100% / (512 / 4)); }
   .syn.left {
     top: 0;
     left: 0;
     height: 100vh; }
   .syn.bottom {
-    bottom: 0; }
+    display: flex;
+    bottom: 0;
+    width: 100%; }
+    .syn.bottom .bar {
+      background-color: #00f7ff;
+      width: calc(100% / (512 / 4)); }
   .syn.right {
     top: 0;
     right: 0;
