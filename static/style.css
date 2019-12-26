@@ -38,7 +38,11 @@
   .syn.left {
     top: 0;
     left: 0;
-    height: 100vh; }
+    height: 100vh;
+    display: flex;
+    flex-direction: column; }
+    .syn.left .bar {
+      height: calc(100% / (512 / 4)); }
   .syn.bottom {
     display: flex;
     bottom: 0;
@@ -49,7 +53,12 @@
   .syn.right {
     top: 0;
     right: 0;
-    height: 100vh; }
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transform: rotate(180deg); }
+    .syn.right .bar {
+      height: calc(100% / (512 / 4)); }
 
 .fullscreen {
   height: 100%;

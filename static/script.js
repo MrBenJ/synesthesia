@@ -49,13 +49,34 @@ for (let i = 0; i < TOTAL_ELEMENTS / 4; i++) {
   bottomWrapper.appendChild(newDiv);
 }
 
+// const leftWrapper = document.createElement('div');
+// leftWrapper.classList.add('syn', 'left');
+// body.appendChild(leftWrapper);
+
+// for(let i = 0; i < TOTAL_ELEMENTS / 4; i++) {
+//   const newDiv = document.createElement('div');
+//   newDiv.classList.add('bar');
+//   leftWrapper.appendChild(newDiv);
+// }
+
+// const rightWrapper = document.createElement('div');
+// rightWrapper.classList.add('syn', 'right');
+// body.appendChild(rightWrapper);
+
+// for(let i = 0; i < TOTAL_ELEMENTS / 4; i++) {
+//   const newDiv = document.createElement('div');
+//   newDiv.classList.add('bar');
+//   rightWrapper.appendChild(newDiv);
+// }
+
 /** @TODO add Left and Right wrappers */
 
 
 
 const topElements = Array.from(document.querySelectorAll('.syn.top .bar'));
 const bottomElements = Array.from(document.querySelectorAll('.syn.bottom .bar'));
-
+// const leftElements = Array.from(document.querySelectorAll('.syn.left .bar'));
+// const rightElements = Array.from(document.querySelectorAll('.syn.right .bar'));
 let didStart = false;
 
 function startAudio() {
@@ -96,6 +117,27 @@ function animate() {
     }
     div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px; background-color: hsl(${hue}, 100%, 50%);`);
   }
+
+  // for (let i = 0; i < leftElements.length; i++) {
+  //   const div = leftElements[i];
+  //   if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
+  //     hue = (hue + HUE_INCREMENT) % 360;
+  //   } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
+  //     hue = Math.abs(hue - HUE_INCREMENT);
+  //   }
+  //   div.setAttribute('style', `width: ${dataArray[i + (TOTAL_ELEMENTS / 2) ]}px; background-color: hsl(${hue}, 100%, 50%);`);
+  // }
+
+  // for (let i = 0; i < rightElements.length; i++) {
+  //   const div = rightElements[i];
+  //   if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
+  //     hue = (hue + HUE_INCREMENT) % 360;
+  //   } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
+  //     hue = Math.abs(hue - HUE_INCREMENT);
+  //   }
+  //   div.setAttribute('style', `width: ${dataArray[i + (TOTAL_ELEMENTS / 2) ]}px; background-color: hsl(${hue}, 100%, 50%);`);
+  // }
+
   window.requestAnimationFrame(animate);
 }
 

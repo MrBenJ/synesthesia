@@ -55,6 +55,12 @@ $TOTAL_ELEMENTS: 512;
     top: 0; 
     left: 0; 
     height: 100vh; 
+    display: flex;
+    flex-direction: column;
+
+    .bar {
+      height: calc(100% / (#{$TOTAL_ELEMENTS} / 4));
+    }
   }
   
   &.bottom { 
@@ -72,6 +78,13 @@ $TOTAL_ELEMENTS: 512;
     top: 0; 
     right: 0; 
     height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    transform: rotate(180deg);
+
+    .bar {
+      height: calc(100% / (#{$TOTAL_ELEMENTS} / 4));
+    }
   }
 
 }
