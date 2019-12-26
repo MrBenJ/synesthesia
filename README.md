@@ -1,5 +1,7 @@
 # Synesthesia
 
+[View this project live on the web!](https://mrbenj-synesthesia.surge.sh)
+
 This is my attempt to allow someone to experience [Synesthesia](https://www.wikipedia.org/Synesthesia) as I experience it while writing code.
 
 Things that you can see:
