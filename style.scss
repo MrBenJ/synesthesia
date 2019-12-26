@@ -29,6 +29,7 @@ $TOTAL_ELEMENTS: 512;
 
   &:focus, &:active {
     outline: none;
+    // background-color: hsl(199, 85%, 61%);
   }
 }
 
@@ -46,7 +47,6 @@ $TOTAL_ELEMENTS: 512;
     width: 100%;
     
     .bar {
-      // background-color: rgb(0, 247, 255);
       width: calc(100% / (#{$TOTAL_ELEMENTS} / 4));
     }
   }
@@ -64,10 +64,7 @@ $TOTAL_ELEMENTS: 512;
     transform: rotate(180deg);
 
     .bar {
-      
-      // background-color: rgb(0, 247, 255);
       width: calc(100% / (#{$TOTAL_ELEMENTS} / 4));
-      // background-color: rgb(9, 25, 247);
     }
   }
   

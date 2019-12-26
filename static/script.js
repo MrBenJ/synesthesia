@@ -11,15 +11,11 @@ let analyzer;
  */
 const TOTAL_ELEMENTS = 512;
 
-/** Colors to cycle throughout the experience */
-const COLORS = [
-  '#00cc00',
-  'rgb(0, 247, 255)', 
-  'rgb(9, 25, 247)', 
-  'dodgerblue', 
-  'hotpink'
-];
+/** Sets the waveform threshold for changing the color */
 const COLOR_THRESHOLD = 70;
+
+/** Increment value for each hue */
+const HUE_INCREMENT = 1;
 
 // Variables to keep track of
 /** Body to append elements to */
@@ -28,8 +24,8 @@ const body = document.getElementById('root');
 /** Total number of input events from the user */
 let totalInputEvents = 0;
 
-/** Points to a color on the COLORS array */
-let colorPointer = 0;
+/** The current hue of color to show */
+let hue = 200;
 
 /** Wrapper div arund the top container with bars */
 const topWrapper = document.createElement('div');
@@ -84,46 +80,24 @@ function animate() {
   for (let i = 0; i < topElements.length; i++) {
     const div = topElements[i];
     if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
-      colorPointer += 1;
-      if (colorPointer === COLORS.length) {
-        colorPointer = 0;
-      }
+      hue = (hue + HUE_INCREMENT) % 360;
     } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
-      colorPointer -= 1;
-      if (colorPointer === -1) {
-        colorPointer = 0;
-      }
+      hue = Math.abs(hue - HUE_INCREMENT);
     }
-    div.setAttribute('style', `height: ${dataArray[i]}px; background-color: ${COLORS[colorPointer]};`);
+    div.setAttribute('style', `height: ${dataArray[i]}px; background-color: hsl(${hue}, 100%, 50%);`);
   }
   
   for (let i = 0; i < bottomElements.length; i++) {
     const div = bottomElements[i];
     if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
-      colorPointer += 1;
-      if (colorPointer === COLORS.length) {
-        colorPointer = 0;
-      }
+      hue = (hue + HUE_INCREMENT) % 360;
     } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
-      colorPointer -= 1;
-      if (colorPointer === -1) {
-        colorPointer = 0;
-      }
+      hue = Math.abs(hue - HUE_INCREMENT);
     }
-    div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px; background-color: ${COLORS[colorPointer]};`);
+    div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px; background-color: hsl(${hue}, 100%, 50%);`);
   }
-  // for (let i = 0; i < bufferLength; i++) {
-  //   // canvas stuff goes in here
-  //   // console.log(dataArray[i]);
-    
-  // }
-
   window.requestAnimationFrame(animate);
 }
-
-// audioElement.addEventListener('play', animate);
-
-
 
 function clear() {
   body.innerHTML = '';
@@ -162,7 +136,7 @@ function init() {
   textarea.value = `
 This is an interactive experience showing what it's like to write code with sound-color synesthesia. 
 
-It's not a perfect representation of my own experience, but it's pretty close!
+It's not a perfect representation of my own experience, but it's the best I could do alongside my programming skills.
 
 Press 'Enter' and start 'writing code' in this element to see what it looks like
   `;
