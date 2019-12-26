@@ -17,6 +17,9 @@ const COLOR_THRESHOLD = 70;
 /** Increment value for each hue */
 const HUE_INCREMENT = 1;
 
+/** Create a "bloom" every this many times the hues change */
+const BLOOM_EVERY = 2000;
+
 // Variables to keep track of
 /** Body to append elements to */
 const body = document.getElementById('root');
@@ -26,6 +29,8 @@ let totalInputEvents = 0;
 
 /** The current hue of color to show */
 let hue = 200;
+
+let hueChanges = 0;
 
 /** Wrapper div arund the top container with bars */
 const topWrapper = document.createElement('div');
@@ -49,7 +54,9 @@ for (let i = 0; i < TOTAL_ELEMENTS / 4; i++) {
   bottomWrapper.appendChild(newDiv);
 }
 
-// I've removed the left and right sides because it's too hard on the browser
+// I've removed the left and right sides because 
+// it's too hard on the browser
+
 // const leftWrapper = document.createElement('div');
 // leftWrapper.classList.add('syn', 'left');
 // body.appendChild(leftWrapper);
@@ -94,6 +101,25 @@ function startAudio() {
   animate();
 }
 
+function createBloom(hue) {
+  const bloom = document.createElement('div');
+  bloom.classList.add('bloom');
+  body.appendChild(bloom);
+  bloom.style = `background-color: hsl(${hue}, 50%, 50%);`;
+
+  setTimeout(() => {
+    bloom.classList.add('flight');
+      setTimeout(() => {
+        bloom.classList.add('land');
+        setTimeout(() => {
+          bloom.parentElement.removeChild(bloom);
+        }, 2100);
+      }, 2100);
+  },0 );
+}
+
+
+
 function animate() {
   const bufferLength = analyzer.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
@@ -102,8 +128,11 @@ function animate() {
   for (let i = 0; i < topElements.length; i++) {
     const div = topElements[i];
     if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
+      hueChanges += 1;
       hue = (hue + HUE_INCREMENT) % 360;
+      
     } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
+      hueChanges += 1;
       hue = Math.abs(hue - HUE_INCREMENT);
     }
     div.setAttribute('style', `height: ${dataArray[i]}px; background-color: hsl(${hue}, 100%, 50%);`);
@@ -112,13 +141,20 @@ function animate() {
   for (let i = 0; i < bottomElements.length; i++) {
     const div = bottomElements[i];
     if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
+      hueChanges += 1;
       hue = (hue + HUE_INCREMENT) % 360;
     } else if (div.clientHeight - COLOR_THRESHOLD > dataArray[i]) {
+      hueChanges += 1;
       hue = Math.abs(hue - HUE_INCREMENT);
     }
     div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px; background-color: hsl(${hue}, 100%, 50%);`);
   }
-
+  
+  if (hueChanges > BLOOM_EVERY) {
+    createBloom(hue);
+    hueChanges = 0;
+  }
+  
   // for (let i = 0; i < leftElements.length; i++) {
   //   const div = leftElements[i];
   //   if (div.clientHeight + COLOR_THRESHOLD < dataArray[i]) {
