@@ -49,6 +49,7 @@ for (let i = 0; i < TOTAL_ELEMENTS / 4; i++) {
   bottomWrapper.appendChild(newDiv);
 }
 
+// I've removed the left and right sides because it's too hard on the browser
 // const leftWrapper = document.createElement('div');
 // leftWrapper.classList.add('syn', 'left');
 // body.appendChild(leftWrapper);
