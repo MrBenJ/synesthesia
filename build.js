@@ -1,16 +1,37 @@
 const fs = require('fs');
 const path = require('path');
+const cheerio = require('cheerio');
 const promisify = require('util');
 
 const DESTINATION_FOLDER = 'dist';
 
 function init() {
+  const distFolder = path.resolve(__dirname, DESTINATION_FOLDER);
+  if (!fs.existsSync(distFolder)) {
+    fs.mkdirSync(distFolder);
+  }
   fs.readdir(path.resolve(__dirname, 'static'), onDirectoryRead);
   fs.readFile(path.resolve(__dirname, 'index.html'), (error, indexData) => {
     if (error) {
       return error;
     }
-    copyFileToDist('index.html', indexData);
+    const $ = cheerio.load(indexData);
+    
+    // Find any /static/ stuff served in the HTML and replace it to root
+    $('[href^="/static"], [src^="/static"]').each( (idx, el) => {
+      if (typeof $(el).attr() === 'object') {{
+        Object.entries($(el).attr()).forEach( ([attr, val]) => {
+          if (val.startsWith('/static/')) {
+            $(el).attr(attr, val.replace('/static/', './'));
+          }
+        });
+      }}
+    });
+    
+    // Remove the last script tag, which is the auto-reloader
+    $('script').last().remove();
+    
+    copyFileToDist('index.html', $.html());
   });
 }
 
@@ -45,7 +66,7 @@ function copyFileToDist(fileName, fileData) {
       if (error) {
         return error;
       }
-      console.log('wrote file', file);
+      console.log('wrote file', fileName);
     }
   );
 }

@@ -5,16 +5,19 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "style": "node-sass --watch ./style.scss ./static/style.css",
+    "dev-style": "node-sass --watch ./style.scss ./static/style.css",
     "livereload": "livereload . -e 'html,css,js'",
-    "dev": "npm-run-all -p style livereload start",
+    "dev": "npm-run-all -p dev-style livereload start",
     "start": "node server.js",
-    "build": "node-sass ./style.scss ./static/style.css"
+    "build": "node-sass ./style.scss ./static/style.css",
+    "style": "node-sass ./style.scss ./static/style.css",
+    "release": "npm run style && node build.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "livereload": "^0.8.2",
     "node-sass": "^4.13.0",
