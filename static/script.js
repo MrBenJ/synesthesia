@@ -9,7 +9,7 @@ let analyzer;
 /** Total elements to render on screen
  * This value will affect FFT buffer size. Don't set it too high! 
  */
-const TOTAL_ELEMENTS = 512;
+const TOTAL_ELEMENTS = 256;
 
 /** Sets the waveform threshold for changing the color */
 const COLOR_THRESHOLD = 70;
@@ -24,11 +24,16 @@ const BLOOM_EVERY = 2000;
 /** Body to append elements to */
 const body = document.getElementById('root');
 
+/** ms for tracking input intervals */
+const INPUT_TRACKING_INTERVAL = 250;
+
 /** Total number of input events from the user */
 let totalInputEvents = 0;
 
 /** The current hue of color to show */
 let hue = 200;
+
+let opacity = 100;
 
 let hueChanges = 0;
 
@@ -135,7 +140,7 @@ function animate() {
       hueChanges += 1;
       hue = Math.abs(hue - HUE_INCREMENT);
     }
-    div.setAttribute('style', `height: ${dataArray[i]}px; background-color: hsl(${hue}, 100%, 50%);`);
+    div.setAttribute('style', `height: ${dataArray[i]}px; background-color: hsla(${hue}, 100%, 50%, ${opacity / 100} );`);
   }
   
   for (let i = 0; i < bottomElements.length; i++) {
@@ -147,7 +152,7 @@ function animate() {
       hueChanges += 1;
       hue = Math.abs(hue - HUE_INCREMENT);
     }
-    div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px; background-color: hsl(${hue}, 100%, 50%);`);
+    div.setAttribute('style', `height: ${dataArray[i + (TOTAL_ELEMENTS / 4)]}px; background-color: hsla(${hue}, 100%, 50%, ${opacity / 100});`);
   }
   
   if (hueChanges > BLOOM_EVERY) {
@@ -183,14 +188,30 @@ function clear() {
   return Promise.resolve(true);
 }
 
-function fuzzyText(text) {
-  const textarea = document.querySelector('textarea.terminal');
-  textarea.removeEventListener('keyup', onTerminalInput);
-  textarea.parentNode.removeChild(textarea);
-  const p = document.createElement('p');
-  p.classList.add('terminal', 'fullscreen', 'fuzzy');
-  p.innerHTML = text;
-  body.appendChild(p);
+let cycles = 40;
+let streak = 0;
+function trackInputEvents() {
+  const events = totalInputEvents / cycles;
+  opacity = events * 100;
+  if (opacity < 50) {
+    totalInputEvents += 25;
+    hue += 15;
+    createBloom(hue);
+  }
+  if (events > 1) {
+    streak++;
+  }
+
+  if (streak > 15){
+    hue += 30;
+    createBloom(hue);
+    streak = 0;
+  }
+  cycles++;
+}
+
+function handleTyping() {
+  hue += totalInputEvents;
 }
 
 function onTerminalInput(event) {
@@ -198,11 +219,14 @@ function onTerminalInput(event) {
   if (event.key === 'Enter' && !didStart) {
     console.log('lets get this bad party started');
     startAudio();
+    setInterval(trackInputEvents, INPUT_TRACKING_INTERVAL);
     didStart = true;
     document.querySelector('textarea').value = 
 `function synesthesia() {
-  // Keep on coding!
+  // Keep on coding or typing!
+  // Typing/Coding will affect the visualization
   // (this code won't run)
+  // Typing fast or slow will affect the colors
   const el = document.getElementById('non-existant');
 
 }`
